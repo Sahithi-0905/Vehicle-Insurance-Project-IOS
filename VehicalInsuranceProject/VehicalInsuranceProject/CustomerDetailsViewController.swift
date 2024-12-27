@@ -220,7 +220,7 @@ class CustomerDetailsViewController: UIViewController {
             return
         }
         displayVC.customer = customer
-        navigationController?.pushViewController(displayVC, animated: true)
+        navigationController?.present(displayVC, animated: true)
     }
 
     private func showAlert(message: String) {
