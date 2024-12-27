@@ -22,11 +22,15 @@ class CustomerDetailsViewController: UIViewController {
     @IBOutlet var showButton: UIButton!
     @IBOutlet var deleteButton: UIButton!
     
-    private let baseURL = "https://abzcustomerwebapi-mani.azurewebsites.net/api/Customer"
+    let accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWJjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjE3MzUyOTcxNzAsImlzcyI6Imh0dHBzOi8vd3d3LnRlYW0yLmNvbSIsImF1ZCI6Imh0dHBzOi8vd3d3LnRlYW0yLmNvbSJ9.hI3vkcRG0fUvagNzKi0MP0ZmqWOuMnulSq3D87PVW08"
     
+    let baseURL = "https://abzcustomerwebapi-akshitha.azurewebsites.net/api/Customer/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWJjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjE3MzUyOTcxNzAsImlzcyI6Imh0dHBzOi8vd3d3LnRlYW0yLmNvbSIsImF1ZCI6Imh0dHBzOi8vd3d3LnRlYW0yLmNvbSJ9.hI3vkcRG0fUvagNzKi0MP0ZmqWOuMnulSq3D87PVW08"
+   
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        
     }
 
     @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -63,6 +67,8 @@ class CustomerDetailsViewController: UIViewController {
     
     // MARK: - API Methods
     private func saveCustomer(customer: Customer) {
+        
+
         guard let url = URL(string: baseURL) else {
             print("Invalid URL")
             return
@@ -71,7 +77,8 @@ class CustomerDetailsViewController: UIViewController {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+                
         do {
             let requestBody = try JSONEncoder().encode(customer)
             request.httpBody = requestBody

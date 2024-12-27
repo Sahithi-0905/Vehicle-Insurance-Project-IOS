@@ -16,6 +16,7 @@ class PolicyDetailsViewController: UIViewController {
     @IBOutlet  var receiptDateLabel : UILabel!
     @IBOutlet  var paymentModeLabel : UILabel!
     @IBOutlet  var amountLabel : UILabel!
+  
 
     var policy: Policy?
 

@@ -41,8 +41,8 @@ class PolicyViewController: UIViewController {
     // MARK: - Date Picker Setup
     private func setupDatePicker() {
         datePicker = UIDatePicker()
-        datePicker.datePickerMode = .date
-        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.datePickerMode = .dateAndTime
+        datePicker.preferredDatePickerStyle = .inline
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         receiptDateField.inputView = datePicker
     }

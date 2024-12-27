@@ -21,15 +21,15 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        sectionNames = ["Customer","Product","Product Addon","Agent","Proposal","Policy","PolicyAddon","Claims"]
-        sectionNamesicons = ["person.crop.circle","bag", "shippingbox","person.circle","square.and.pencil","list.clipboard.fill","plus.circle.fill","doc.text.fill"]
+        sectionNames = ["Customer","Vehicle","Product","Product Addon","Agent","Proposal","Policy","PolicyAddon","Claims"]
+        sectionNamesicons = ["person.crop.circle","car.fill","bag", "shippingbox","person.circle","square.and.pencil","list.clipboard.fill","plus.circle.fill","doc.text.fill"]
         // Do any additional setup after loading the view.
         tableView.delegate = self
         tableView.dataSource = self
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 8
+        return 9
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,43 +61,50 @@ class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewD
                 self.navigationController?.pushViewController(nextScreen, animated: true)
             }
         }else if indexPath.section == 1 {
+            //Navigate to vehicle screen
+            if let nextScreen = storyboard.instantiateViewController(withIdentifier: "vehicleid") as? VehicleViewController {
+                self.navigationController?.pushViewController(nextScreen, animated: true)
+            }
+        }else if indexPath.section == 2 {
             // Navigate to Product  screen
             if let nextScreen = storyboard.instantiateViewController(withIdentifier: "proid") as? ProductViewController {
                 self.navigationController?.pushViewController(nextScreen, animated: true)
             }
-        }else if indexPath.section == 2 {
+        }else if indexPath.section == 3 {
             //Navigate to Product Addon Screen
             if let nextScreen = storyboard.instantiateViewController(withIdentifier: "proaddid") as? ProductAddOnViewController {
                 self.navigationController?.pushViewController(nextScreen, animated: true)
             }
         }
-        else if indexPath.section == 3 {
+        else if indexPath.section == 4 {
             //Navigate to Agent Screen
             if let nextScreen = storyboard.instantiateViewController(withIdentifier: "agid") as? AgentsViewController {
                 self.navigationController?.pushViewController(nextScreen, animated: true)
             }
-        }else if indexPath.section == 4{
+        }else if indexPath.section == 5{
                 // Navigate to Proposal screen
                 if let nextScreen = storyboard.instantiateViewController(withIdentifier: "propid") as? ProposalViewController {
                     self.navigationController?.pushViewController(nextScreen, animated: true)
                 }
-            }else if indexPath.section == 5 {
+            }else if indexPath.section == 6 {
                 //Navigate to Policy Screen
                 if let nextScreen = storyboard.instantiateViewController(withIdentifier: "policyid") as? PolicyViewController {
                     self.navigationController?.pushViewController(nextScreen, animated: true)
                 }
-            }else if indexPath.section == 6{
+            }else if indexPath.section == 7{
                 //Navigate to PolicyAddon Screen
                 if let nextScreen = storyboard.instantiateViewController(withIdentifier: "poliid") as? PolicyAddonViewController {
                     self.navigationController?.pushViewController(nextScreen, animated: true)
                 }
             }
-        else if indexPath.section == 7{
+        else if indexPath.section == 8{
                 //Navigate to Claims Screen
                 if let nextScreen = storyboard.instantiateViewController(withIdentifier: "claimsid") as? ClaimsViewController {
                     self.navigationController?.pushViewController(nextScreen, animated: true)
                 }
             }
+        
+        
         }
         /*
          // MARK: - Navigation

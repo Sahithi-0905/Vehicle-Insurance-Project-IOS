@@ -56,7 +56,7 @@ class ClaimsViewController: UIViewController {
             [claimDateTextField, incidentDateTextField, surveyDateTextField].forEach { textField in
                 textField?.inputView = datePicker
                 datePicker.datePickerMode = .date
-                datePicker.preferredDatePickerStyle = .wheels
+                datePicker.preferredDatePickerStyle = .inline
                 datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
             }
         }
