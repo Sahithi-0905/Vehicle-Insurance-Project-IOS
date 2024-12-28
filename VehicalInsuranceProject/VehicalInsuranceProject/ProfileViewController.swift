@@ -5,115 +5,153 @@
 //  Created by shamitha on 24/12/24.
 //
 
+//
+//  ProfileViewController.swift
+//  VehicalInsuranceProject
+//
+//  Created by shamitha on 24/12/24.
+//
+
 import UIKit
 
-class ProfileViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+class ProfileViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    
-    @IBOutlet var tableView: UITableView!
-    @IBOutlet var profileImageView: UIImageView!
-    @IBOutlet var nameLabel: UILabel!
-    @IBOutlet var phoneLabel: UILabel!
-    
-    var sectionNames: [String] = []
-    var sectionNamesicons: [String] = []
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+        @IBOutlet var tableView: UITableView!
+        @IBOutlet var profileImageView: UIImageView!
+        @IBOutlet var nameLabel: UILabel!
+        @IBOutlet var phoneLabel: UILabel!
         
-        sectionNames = ["Customer","Vehicle","Product","Product Addon","Agent","Proposal","Policy","PolicyAddon","Claims"]
-        sectionNamesicons = ["person.crop.circle","car.fill","bag", "shippingbox","person.circle","square.and.pencil","list.clipboard.fill","plus.circle.fill","doc.text.fill"]
-        // Do any additional setup after loading the view.
-        tableView.delegate = self
-        tableView.dataSource = self
-    }
-    func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 9
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        //let name = sectionNames[0]
-        return 1
-    }
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var sectionNames: [String] = []
+        var sectionNamesicons: [String] = []
         
-        
-        let cell1 = tableView.dequeueReusableCell(withIdentifier: "id1", for: indexPath)
-        
-        cell1.textLabel?.text = sectionNames[indexPath.section]
-        cell1.imageView?.image = UIImage(systemName: sectionNamesicons[indexPath.section]) // Set SF Symbol
-        //cell1.backgroundColor = .clear
-        cell1.accessoryType = .disclosureIndicator
-        
-        return cell1
-        
-    }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        if indexPath.section == 0 {
-            // Navigate to Customer screen
-            if let nextScreen = storyboard.instantiateViewController(withIdentifier: "custid") as? CustomerDetailsViewController {
-                self.navigationController?.pushViewController(nextScreen, animated: true)
-            }
-        }else if indexPath.section == 1 {
-            //Navigate to vehicle screen
-            if let nextScreen = storyboard.instantiateViewController(withIdentifier: "vehicleid") as? VehicleViewController {
-                self.navigationController?.pushViewController(nextScreen, animated: true)
-            }
-        }else if indexPath.section == 2 {
-            // Navigate to Product  screen
-            if let nextScreen = storyboard.instantiateViewController(withIdentifier: "proid") as? ProductViewController {
-                self.navigationController?.pushViewController(nextScreen, animated: true)
-            }
-        }else if indexPath.section == 3 {
-            //Navigate to Product Addon Screen
-            if let nextScreen = storyboard.instantiateViewController(withIdentifier: "proaddid") as? ProductAddOnViewController {
-                self.navigationController?.pushViewController(nextScreen, animated: true)
-            }
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            
+            sectionNames = ["Customer", "Vehicle", "Product", "Product Addon", "Agent", "Proposal", "Policy", "PolicyAddon", "Claims"]
+            sectionNamesicons = ["person.crop.circle", "car.fill", "bag", "shippingbox", "person.circle", "square.and.pencil", "list.clipboard.fill", "plus.circle.fill", "doc.text.fill"]
+            
+            tableView.delegate = self
+            tableView.dataSource = self
+            
+            // Add tap gesture to profileImageView
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(selectProfileImage))
+            profileImageView.isUserInteractionEnabled = true
+            profileImageView.addGestureRecognizer(tapGesture)
         }
-        else if indexPath.section == 4 {
-            //Navigate to Agent Screen
-            if let nextScreen = storyboard.instantiateViewController(withIdentifier: "agid") as? AgentsViewController {
-                self.navigationController?.pushViewController(nextScreen, animated: true)
+        
+        override func viewDidLayoutSubviews() {
+            super.viewDidLayoutSubviews()
+            profileImageView.layer.cornerRadius = profileImageView.frame.width / 2
+            profileImageView.clipsToBounds = true
+            profileImageView.layer.borderWidth = 2
+            profileImageView.layer.borderColor = UIColor.systemGray4.cgColor
+        }
+        
+        @objc func selectProfileImage() {
+            let actionSheet = UIAlertController(title: "Select Profile Image", message: "Choose a source", preferredStyle: .actionSheet)
+            
+            // Camera option
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { _ in
+                    self.presentImagePicker(sourceType: .camera)
+                }))
             }
-        }else if indexPath.section == 5{
-                // Navigate to Proposal screen
+            
+            // Photo Library option
+            actionSheet.addAction(UIAlertAction(title: "Photo Library", style: .default, handler: { _ in
+                self.presentImagePicker(sourceType: .photoLibrary)
+            }))
+            
+            // Cancel option
+            actionSheet.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+            
+            // For iPad, present the action sheet properly
+            if let popoverController = actionSheet.popoverPresentationController {
+                popoverController.sourceView = self.profileImageView
+                popoverController.sourceRect = profileImageView.bounds
+            }
+            
+            present(actionSheet, animated: true, completion: nil)
+        }
+        
+        func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = sourceType
+            imagePicker.allowsEditing = true
+            present(imagePicker, animated: true, completion: nil)
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let selectedImage = info[.editedImage] as? UIImage {
+                profileImageView.image = selectedImage
+            } else if let originalImage = info[.originalImage] as? UIImage {
+                profileImageView.image = originalImage
+            }
+            dismiss(animated: true, completion: nil)
+        }
+        
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            dismiss(animated: true, completion: nil)
+        }
+        
+        func numberOfSections(in tableView: UITableView) -> Int {
+            return sectionNames.count
+        }
+        
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            return 1
+        }
+        
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "id1", for: indexPath)
+            cell.textLabel?.text = sectionNames[indexPath.section]
+            cell.imageView?.image = UIImage(systemName: sectionNamesicons[indexPath.section]) // Set SF Symbol
+            cell.accessoryType = .disclosureIndicator
+            return cell
+        }
+        
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            switch indexPath.section {
+            case 0:
+                if let nextScreen = storyboard.instantiateViewController(withIdentifier: "custid") as? CustomerDetailsViewController {
+                    navigationController?.pushViewController(nextScreen, animated: true)
+                }
+            case 1:
+                if let nextScreen = storyboard.instantiateViewController(withIdentifier: "vehicleid") as? VehicleViewController {
+                    navigationController?.pushViewController(nextScreen, animated: true)
+                }
+            case 2:
+                if let nextScreen = storyboard.instantiateViewController(withIdentifier: "proid") as? ProductViewController {
+                    navigationController?.pushViewController(nextScreen, animated: true)
+                }
+            case 3:
+                if let nextScreen = storyboard.instantiateViewController(withIdentifier: "proaddid") as? ProductAddOnViewController {
+                    navigationController?.pushViewController(nextScreen, animated: true)
+                }
+            case 4:
+                if let nextScreen = storyboard.instantiateViewController(withIdentifier: "agentid") as? AgentsViewController {
+                    navigationController?.pushViewController(nextScreen, animated: true)
+                }
+            case 5:
                 if let nextScreen = storyboard.instantiateViewController(withIdentifier: "propid") as? ProposalViewController {
-                    self.navigationController?.pushViewController(nextScreen, animated: true)
+                    navigationController?.pushViewController(nextScreen, animated: true)
                 }
-            }else if indexPath.section == 6 {
-                //Navigate to Policy Screen
+            case 6:
                 if let nextScreen = storyboard.instantiateViewController(withIdentifier: "policyid") as? PolicyViewController {
-                    self.navigationController?.pushViewController(nextScreen, animated: true)
+                    navigationController?.pushViewController(nextScreen, animated: true)
                 }
-            }else if indexPath.section == 7{
-                //Navigate to PolicyAddon Screen
+            case 7:
                 if let nextScreen = storyboard.instantiateViewController(withIdentifier: "poliid") as? PolicyAddonViewController {
-                    self.navigationController?.pushViewController(nextScreen, animated: true)
+                    navigationController?.pushViewController(nextScreen, animated: true)
                 }
-            }
-        else if indexPath.section == 8{
-                //Navigate to Claims Screen
+            case 8:
                 if let nextScreen = storyboard.instantiateViewController(withIdentifier: "claimsid") as? ClaimsViewController {
-                    self.navigationController?.pushViewController(nextScreen, animated: true)
+                    navigationController?.pushViewController(nextScreen, animated: true)
                 }
+            default:
+                break
             }
-        
-        
         }
-        /*
-         // MARK: - Navigation
-         
-         // In a storyboard-based application, you will often want to do a little preparation before navigation
-         override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-         // Get the new view controller using segue.destination.
-         // Pass the selected object to the new view controller.
-         }
-         */
     }
-

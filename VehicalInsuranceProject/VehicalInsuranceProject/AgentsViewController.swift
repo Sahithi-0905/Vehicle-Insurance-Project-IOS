@@ -7,18 +7,20 @@
 
 import UIKit
 
+// MARK: - Agent Model
 struct Agent: Codable {
-    let agentID: String
-    let agentName: String
-    let agentPhone: String
-    let agentEmail: String
-    let licenseCode: String
+    var agentID: String
+    var agentName: String
+    var agentPhone: String
+    var agentEmail: String
+    var licenseCode: String
 }
+
 
 
 class AgentsViewController: UIViewController {
 
-    @IBOutlet var agentId: UITextField!
+      @IBOutlet var agentId: UITextField!
        @IBOutlet var agentName: UITextField!
        @IBOutlet var agentPhone: UITextField!
        @IBOutlet var agentEmail: UITextField!
@@ -27,174 +29,182 @@ class AgentsViewController: UIViewController {
        @IBOutlet var update: UIButton!
        @IBOutlet var show: UIButton!
        @IBOutlet var delete: UIButton!
-       
+    
+    let accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibm4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJtbSIsImV4cCI6MTczNTM4NjQyMSwiaXNzIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIiwiYXVkIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIn0.yZbVCj2bGuCvFcIcGyR9Nt9fdDhV9JGd6fu-aEZzYTE"
+    
+    let baseURL = "https://abzagentwebapi-akshitha.azurewebsites.net/api/Agent"
+    
+    
        override func viewDidLoad() {
            super.viewDidLoad()
        }
-       
-       // MARK: - Button Actions
-       
-       @IBAction func saveAgent() {
-           guard let agentData = createAgentData() else {
-               displayAlert(alertTitle: "Error", alertMessage: "All fields must be filled.")
+       // MARK: - IBActions
+       @IBAction func saveButtonTapped(_ sender: UIButton) {
+           guard let agent = getAgentFromFields() else {
+               showAlert(message: "Please fill all fields")
                return
            }
-           
-           performRequest(
-               endpoint: "https://abzagentwebapi-akshitha.azurewebsites.net/api/Agent",
-               method: "POST",
-               agentData: agentData
-           ) { response in
-               self.displayAlert(alertTitle: "Success", alertMessage: "Agent saved successfully.")
+           saveAgent(agent: agent)
+       }
+
+       @IBAction func updateButtonTapped(_ sender: UIButton) {
+           guard let agent = getAgentFromFields() else {
+               showAlert(message: "Please fill all fields")
+               return
+           }
+           updateAgent(agent: agent)
+       }
+
+       @IBAction func showButtonTapped(_ sender: UIButton) {
+           guard let id = agentId.text, !id.isEmpty else {
+               showAlert(message: "Please enter the agent ID to fetch details")
+               return
+           }
+           fetchAgent(id: id)
+       }
+
+       @IBAction func deleteButtonTapped(_ sender: UIButton) {
+           guard let id = agentId.text, !id.isEmpty else {
+               showAlert(message: "Please enter the agent ID to delete")
+               return
+           }
+           deleteAgent(id: id)
+       }
+
+       // MARK: - API Methods
+       private func saveAgent(agent: Agent) {
+           guard let url = URL(string: "\(baseURL)/\(accessToken)") else {
+               print("Invalid URL")
+               return
+           }
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "POST"
+           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+           request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+
+           do {
+               let requestBody = try JSONEncoder().encode(agent)
+               request.httpBody = requestBody
+           } catch {
+               print("Error encoding agent: \(error)")
+               return
+           }
+
+           performRequest(request, action: "save") { success in
+               if success {
+                   self.showAlert(message: "Agent saved successfully!")
+               } else {
+                   self.showAlert(message: "Failed to save agent. Please try again.")
+               }
            }
        }
-       
-       @IBAction func updateAgent() {
-           guard let agentData = createAgentData(), let agentId = agentId.text else {
-               displayAlert(alertTitle: "Error", alertMessage: "All fields must be filled, including Agent ID.")
-               return
-           }
-           
-           performRequest(
-               endpoint: "https://abzagentwebapi-akshitha.azurewebsites.net/api/Agent/\(agentId)",
-               method: "PUT",
-               agentData: agentData
-           ) { response in
-               self.displayAlert(alertTitle: "Success", alertMessage: "Agent updated successfully.")
+
+       private func updateAgent(agent: Agent) {
+           guard let id = agentId.text, let url = URL(string: "\(baseURL)/\(id)") else { return }
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "PUT"
+           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+           request.httpBody = try? JSONEncoder().encode(agent)
+
+           performRequest(request, action: "update") { success in
+               self.showAlert(message: success ? "Agent updated successfully!" : "Failed to update agent.")
            }
        }
-       
-       @IBAction func showAgent() {
-           guard let agentId = agentId.text, !agentId.isEmpty else {
-               displayAlert(alertTitle: "Error", alertMessage: "Please enter an Agent ID.")
-               return
-           }
-           
-           performRequest(
-               endpoint: "https://abzagentwebapi-akshitha.azurewebsites.net/api/Agent/\(agentId)",
-               method: "GET"
-           ) { response in
-               guard let agent = self.parseAgentResponse(response) else {
-                   self.displayAlert(alertTitle: "Error", alertMessage: "Failed to fetch agent details.")
+
+       private func fetchAgent(id: String) {
+           guard let url = URL(string: "\(baseURL)/\(id)") else { return }
+
+           let request = URLRequest(url: url)
+
+           performRequestWithData(request) { data in
+               guard let data = data else {
+                   self.showAlert(message: "Failed to fetch agent")
                    return
                }
-               
-               DispatchQueue.main.async {
-                   self.navigateToAgentDetails(with: agent)
+
+               do {
+                   let agent = try JSONDecoder().decode(Agent.self, from: data)
+                   self.navigateToAgentDisplay(with: agent)
+               } catch {
+                   self.showAlert(message: "Failed to parse agent data")
                }
            }
        }
-       
-       @IBAction func deleteAgent() {
-           guard let agentId = agentId.text, !agentId.isEmpty else {
-               displayAlert(alertTitle: "Error", alertMessage: "Please enter an Agent ID.")
-               return
-           }
-           
-           performRequest(
-               endpoint: "https://abzagentwebapi-akshitha.azurewebsites.net/api/Agent/\(agentId)",
-               method: "DELETE"
-           ) { _ in
-               self.displayAlert(alertTitle: "Success", alertMessage: "Agent deleted successfully.")
+
+       private func deleteAgent(id: String) {
+           guard let url = URL(string: "\(baseURL)/\(id)") else { return }
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "DELETE"
+
+           performRequest(request, action: "delete") { success in
+               self.showAlert(message: success ? "Agent deleted successfully!" : "Failed to delete agent.")
            }
        }
-       
-       // MARK: - Navigation
-       
-       private func navigateToAgentDetails(with agent: Agent) {
-           // Instantiate the AgentDetailsViewController from the storyboard
-           guard let agentDetailsVC = storyboard?.instantiateViewController(withIdentifier: "AgentDetailsViewController") as? AgentDetailsViewController else {
-               displayAlert(alertTitle: "Error", alertMessage: "Failed to load agent details screen.")
-               return
-           }
-           
-           // Pass the agent data to the details screen
-           agentDetailsVC.agent = agent
-           
-           // Navigate to the AgentDetailsViewController
-           navigationController?.pushViewController(agentDetailsVC, animated: true)
+
+       private func performRequest(_ request: URLRequest, action: String, completion: @escaping (Bool) -> Void) {
+           URLSession.shared.dataTask(with: request) { _, response, error in
+               if let error = error {
+                   print("Request Error: \(error.localizedDescription)")
+                   completion(false)
+                   return
+               }
+
+               guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
+                   completion(false)
+                   return
+               }
+
+               completion(true)
+           }.resume()
        }
-       
-       // MARK: - Helper Functions
-       
-       private func createAgentData() -> Agent? {
+
+       private func performRequestWithData(_ request: URLRequest, completion: @escaping (Data?) -> Void) {
+           URLSession.shared.dataTask(with: request) { data, response, error in
+               if let error = error {
+                   print("Error: \(error.localizedDescription)")
+                   completion(nil)
+                   return
+               }
+               guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+                   completion(nil)
+                   return
+               }
+               completion(data)
+           }.resume()
+       }
+
+       // MARK: - Helper Methods
+       private func getAgentFromFields() -> Agent? {
            guard let id = agentId.text, !id.isEmpty,
                  let name = agentName.text, !name.isEmpty,
                  let phone = agentPhone.text, !phone.isEmpty,
                  let email = agentEmail.text, !email.isEmpty,
-                 let license = licenseCode.text, !license.isEmpty else {
+                 let licenseCode = licenseCode.text, !licenseCode.isEmpty else {
                return nil
            }
-           
-           return Agent(
-               agentID: id,
-               agentName: name,
-               agentPhone: phone,
-               agentEmail: email,
-               licenseCode: license
-           )
+
+           return Agent(agentID: id, agentName: name, agentPhone: phone, agentEmail: email, licenseCode: licenseCode)
        }
-       
-       private func performRequest(
-           endpoint: String,
-           method: String,
-           agentData: Agent? = nil,
-           completion: @escaping (Data?) -> Void
-       ) {
-           guard let url = URL(string: endpoint) else {
-               displayAlert(alertTitle: "Error", alertMessage: "Invalid URL.")
+
+       private func navigateToAgentDisplay(with agent: Agent) {
+           let storyboard = UIStoryboard(name: "Main", bundle: nil)
+           guard let displayVC = storyboard.instantiateViewController(withIdentifier: "agid") as? AgentDetailsViewController else {
+               showAlert(message: "Unable to navigate to Agent Display")
                return
            }
-           
-           var request = URLRequest(url: url)
-           request.httpMethod = method
-           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-           
-           if let agentData = agentData {
-               do {
-                   let jsonData = try JSONEncoder().encode(agentData)
-                   request.httpBody = jsonData
-               } catch {
-                   displayAlert(alertTitle: "Error", alertMessage: "Failed to encode agent data.")
-                   return
-               }
-           }
-           
-           let task = URLSession.shared.dataTask(with: request) { data, response, error in
-               if let error = error {
-                   self.displayAlert(alertTitle: "Error", alertMessage: "Request failed: \(error.localizedDescription)")
-                   return
-               }
-               
-               guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                   self.displayAlert(alertTitle: "Error", alertMessage: "Server error or invalid response.")
-                   return
-               }
-               
-               completion(data)
-           }
-           task.resume()
+           displayVC.agent = agent
+           navigationController?.pushViewController(displayVC, animated: true)
        }
-       
-       private func parseAgentResponse(_ data: Data?) -> Agent? {
-           guard let data = data else { return nil }
-           do {
-               return try JSONDecoder().decode(Agent.self, from: data)
-           } catch {
-               print("Error decoding agent data: \(error)")
-               return nil
-           }
-       }
-       
-       func displayAlert(alertTitle: String, alertMessage: String) {
-           DispatchQueue.main.async {
-               let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-               alert.addAction(UIAlertAction(title: "OK", style: .default))
-               self.present(alert, animated: true)
-           }
+
+       private func showAlert(message: String) {
+           let alert = UIAlertController(title: "Message", message: message, preferredStyle: .alert)
+           alert.addAction(UIAlertAction(title: "OK", style: .default))
+           present(alert, animated: true)
        }
    }
-    
 
     /*
     // MARK: - Navigation

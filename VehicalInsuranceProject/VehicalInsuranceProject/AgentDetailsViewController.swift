@@ -17,6 +17,8 @@ class AgentDetailsViewController: UIViewController {
     @IBOutlet var agentEmailLabel: UILabel!
     @IBOutlet var licenseCodeLabel: UILabel!
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         displayAgentDetails()

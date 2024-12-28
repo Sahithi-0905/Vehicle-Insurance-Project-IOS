@@ -45,7 +45,10 @@ class ClaimsViewController: UIViewController {
     @IBOutlet var deleteButton: UIButton!
     
        let datePicker = UIDatePicker()
-        let claimsBaseURL = "https://abzclaimwebapi-akshitha.azurewebsites.net/swagger/index.html"
+    
+    let accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWJjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjE3MzUzMjY2MTcsImlzcyI6Imh0dHBzOi8vd3d3LnRlYW0yLmNvbSIsImF1ZCI6Imh0dHBzOi8vd3d3LnRlYW0yLmNvbSJ9.lHyNu9sEXFR5kTCDON8tQPJ5d8eI390LJE--OfOVmmI"
+    
+        let baseURL = "https://abzclaimwebapi-akshitha.azurewebsites.net/api/claim"
 
         override func viewDidLoad() {
             super.viewDidLoad()
@@ -112,7 +115,7 @@ class ClaimsViewController: UIViewController {
 
        // MARK: - API Methods
     private func saveClaim(Claim: ClaimDetails) {
-        guard let url = URL(string: claimsBaseURL) else {
+        guard let url = URL(string: "\(baseURL)/\(accessToken)") else {
             print("Invalid URL")
             return
         }
@@ -141,7 +144,7 @@ class ClaimsViewController: UIViewController {
     }
 
     private func updateClaim(Claim: ClaimDetails) {
-        guard let url = URL(string: "\(claimsBaseURL)/\(claimNoTextField.text!)") else { return }
+        guard let url = URL(string: "\(baseURL)/\(claimNoTextField.text!)") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
@@ -154,7 +157,7 @@ class ClaimsViewController: UIViewController {
     }
     
     private func showClaim(claimNo: String) {
-        guard let url = URL(string: "\(claimsBaseURL)/(claimNoTextField.text!)") else { return }
+        guard let url = URL(string: "\(baseURL)/(claimNoTextField.text!)") else { return }
         
         let request = URLRequest(url: url)
         
@@ -180,7 +183,7 @@ class ClaimsViewController: UIViewController {
     }
     
     private func deleteClaim(claimNo: String) {
-        guard let url = URL(string: "\(claimsBaseURL)/(claimNoTextField)") else { return }
+        guard let url = URL(string: "\(baseURL)/(claimNoTextField)") else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
