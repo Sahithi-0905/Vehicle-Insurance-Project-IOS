@@ -22,7 +22,8 @@ class PolicyAddonViewController: UIViewController {
     @IBOutlet var updateButton: UIButton!
     @IBOutlet var showButton: UIButton!
     @IBOutlet var deleteButton: UIButton!
-    
+    let accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoieXkiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJtbSIsImV4cCI6MTczNTQ4NjM0MSwiaXNzIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIiwiYXVkIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIn0.sqTWhGQtnvTiiGsk4zC12V_O8xkd66peYrKpvIj7-lU"
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -35,7 +36,7 @@ class PolicyAddonViewController: UIViewController {
         }
         
         performRequest(
-            endpoint: "https://abzproductwebapi-akshitha.azurewebsites.net/api/PolicyAddon",
+            endpoint: "https://abzproductwebapi-akshitha.azurewebsites.net/api/PolicyAddon/\(accessToken)",
             method: "POST",
             policyAddonData: policyAddonData
         ) { _ in
@@ -119,6 +120,7 @@ class PolicyAddonViewController: UIViewController {
         
         var request = URLRequest(url: url)
         request.httpMethod = method
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         if let policyAddonData = policyAddonData {

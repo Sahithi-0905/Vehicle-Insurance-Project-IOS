@@ -41,12 +41,6 @@
                                     <segue destination="ow4-bI-fih" kind="show" id="gS1-2C-tkC"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone numbe or emailid" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sfi-MP-Kgw">
-                                <rect key="frame" x="54" y="370" width="284" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1ER-T0-utn">
                                 <rect key="frame" x="125" y="485" width="121" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -60,11 +54,23 @@
                                     <segue destination="azV-Kb-HqQ" kind="show" id="5UA-me-9jQ"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone numbe or emailid" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Sfi-MP-Kgw">
+                                <rect key="frame" x="54" y="368" width="284" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     </view>
                     <navigationItem key="navigationItem" id="rwj-Sk-HdX"/>
+                    <connections>
+                        <outlet property="emailTextFieldd" destination="Sfi-MP-Kgw" id="VqB-bN-pGe"/>
+                        <outlet property="passwordTextFiel" destination="YkE-ns-fNr" id="9xO-9c-3X6"/>
+                        <outlet property="sigUp" destination="kLp-KB-3cp" id="8lO-rF-XBA"/>
+                        <outlet property="signIn" destination="1ER-T0-utn" id="9jH-yf-rSw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -421,6 +427,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="SAVE">
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="21"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="saveProposal" destination="1oW-H3-8JQ" eventType="touchUpInside" id="c6z-ub-P3G"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zHN-uE-Z8k">
                                 <rect key="frame" x="25" y="725" width="111" height="37"/>
@@ -431,6 +440,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="UPDATE">
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="updateProposal" destination="1oW-H3-8JQ" eventType="touchUpInside" id="p2H-XN-zeQ"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b1n-ic-hML">
                                 <rect key="frame" x="144" y="725" width="121" height="37"/>
@@ -441,6 +453,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="SHOW">
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="showProposalDetails" destination="1oW-H3-8JQ" eventType="touchUpInside" id="Ctd-vN-trs"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="baH-dx-mM9">
                                 <rect key="frame" x="273" y="725" width="105" height="38"/>
@@ -451,6 +466,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="DELETE">
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="deleteProposal" destination="1oW-H3-8JQ" eventType="touchUpInside" id="M09-w3-Eob"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter To Date" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f7S-K6-xog">
                                 <rect key="frame" x="16" y="397" width="361" height="34"/>
@@ -486,6 +504,22 @@
                         <viewLayoutGuide key="safeArea" id="9EG-zR-1IW"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <connections>
+                        <outlet property="AgentID" destination="cgk-F7-FyY" id="BNn-Ib-V1M"/>
+                        <outlet property="BasicAmount" destination="ZNp-TU-vQm" id="72R-Qf-PQ4"/>
+                        <outlet property="CustomerID" destination="lGY-bX-lIV" id="ifi-c9-6dR"/>
+                        <outlet property="FromDate" destination="tFw-92-Ksa" id="2jA-Xf-9OY"/>
+                        <outlet property="Idv" destination="Yba-A8-lO0" id="zq3-3f-A5s"/>
+                        <outlet property="ProductID" destination="R1S-ej-hDk" id="yWc-En-sQx"/>
+                        <outlet property="ToDate" destination="f7S-K6-xog" id="Oxe-Bq-YZ9"/>
+                        <outlet property="TotalAmount" destination="oYK-UL-3FY" id="MhI-sP-hqn"/>
+                        <outlet property="deleteButton" destination="baH-dx-mM9" id="Nu6-wy-e7g"/>
+                        <outlet property="proposalNo" destination="kM8-7M-FKA" id="LBR-oI-rAb"/>
+                        <outlet property="registrationNo" destination="xfL-eE-tDa" id="htg-KL-HND"/>
+                        <outlet property="saveButton" destination="uI0-IO-u2S" id="Y9r-i1-cJb"/>
+                        <outlet property="showButton" destination="b1n-ic-hML" id="hbW-7G-X8C"/>
+                        <outlet property="updateButton" destination="zHN-uE-Z8k" id="cUf-hq-8jN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pVs-nc-KRD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1411,6 +1445,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="UPDATE">
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="updateProduct" destination="dVR-A7-s1r" eventType="touchUpInside" id="MDr-f2-Poe"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ewp-L8-Eyv">
                                 <rect key="frame" x="136" y="503" width="121" height="37"/>
@@ -1421,6 +1458,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="SHOW">
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="showProduct" destination="dVR-A7-s1r" eventType="touchUpInside" id="pbe-e0-S75"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O0A-E7-wyV">
                                 <rect key="frame" x="272" y="504" width="105" height="38"/>
@@ -1431,6 +1471,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="DELETE">
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="16"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="deleteProduct" destination="dVR-A7-s1r" eventType="touchUpInside" id="R5J-Vq-MTl"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DRT-8a-THi">
                                 <rect key="frame" x="88" y="437" width="216" height="41"/>
@@ -1441,6 +1484,9 @@
                                 <buttonConfiguration key="configuration" style="plain" title="SAVE">
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="21"/>
                                 </buttonConfiguration>
+                                <connections>
+                                    <action selector="saveProduct" destination="dVR-A7-s1r" eventType="touchUpInside" id="Qfn-Jm-dh8"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Product ID" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zpU-rp-oNT">
                                 <rect key="frame" x="16" y="175" width="361" height="34"/>
@@ -1452,6 +1498,16 @@
                         <viewLayoutGuide key="safeArea" id="cjK-Q0-F8B"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <connections>
+                        <outlet property="addId" destination="NZ3-tA-bWv" id="nfa-KT-czy"/>
+                        <outlet property="addTitle" destination="40M-t1-35K" id="k32-Xz-03N"/>
+                        <outlet property="adddDescription" destination="7dx-ma-gMb" id="oBt-n6-l8h"/>
+                        <outlet property="delete" destination="O0A-E7-wyV" id="ETe-f8-eXd"/>
+                        <outlet property="prodId" destination="zpU-rp-oNT" id="Klm-rL-6yI"/>
+                        <outlet property="save" destination="DRT-8a-THi" id="hZg-dv-JHC"/>
+                        <outlet property="show" destination="Ewp-L8-Eyv" id="6Ws-7o-dGi"/>
+                        <outlet property="update" destination="2Rt-9g-Aaj" id="JUu-07-DWG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AMN-Ud-3Ph" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1521,38 +1577,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NLI-YP-QZc">
-                                <rect key="frame" x="54" y="254" width="284" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Datr of birth" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pre-Ie-g2F">
-                                <rect key="frame" x="54" y="317" width="284" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone numbe or emailid" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u2q-8o-nsV">
-                                <rect key="frame" x="54" y="377" width="284" height="34"/>
+                                <rect key="frame" x="54" y="265" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mJ4-5W-Tfd">
-                                <rect key="frame" x="54" y="444" width="284" height="34"/>
+                                <rect key="frame" x="54" y="344" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RGE-Gh-xgk">
-                                <rect key="frame" x="54" y="507" width="284" height="34"/>
+                                <rect key="frame" x="54" y="425" width="284" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h2m-Ov-DFg">
+                                <rect key="frame" x="54" y="189" width="284" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2PQ-Ls-BX0">
-                                <rect key="frame" x="136" y="598" width="121" height="42"/>
+                                <rect key="frame" x="136" y="518" width="121" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0080938345179999999" green="0.21842946090000001" blue="0.88150376080000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1561,12 +1611,6 @@
                                     <fontDescription key="titleFontDescription" name="TimesNewRomanPSMT" family="Times New Roman" pointSize="21"/>
                                 </buttonConfiguration>
                             </button>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="h2m-Ov-DFg">
-                                <rect key="frame" x="54" y="189" width="284" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Xnz-o4-Eyd"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

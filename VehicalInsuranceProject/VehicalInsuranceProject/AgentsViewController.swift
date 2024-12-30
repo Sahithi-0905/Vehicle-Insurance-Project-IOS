@@ -30,13 +30,14 @@ class AgentsViewController: UIViewController {
        @IBOutlet var show: UIButton!
        @IBOutlet var delete: UIButton!
     
-    let accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibm4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJtbSIsImV4cCI6MTczNTM4NjQyMSwiaXNzIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIiwiYXVkIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIn0.yZbVCj2bGuCvFcIcGyR9Nt9fdDhV9JGd6fu-aEZzYTE"
+    let accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoieXkiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJtbSIsImV4cCI6MTczNTQ4NjM0MSwiaXNzIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIiwiYXVkIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIn0.sqTWhGQtnvTiiGsk4zC12V_O8xkd66peYrKpvIj7-lU"
     
     let baseURL = "https://abzagentwebapi-akshitha.azurewebsites.net/api/Agent"
     
     
        override func viewDidLoad() {
            super.viewDidLoad()
+           
        }
        // MARK: - IBActions
        @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -80,8 +81,9 @@ class AgentsViewController: UIViewController {
 
            var request = URLRequest(url: url)
            request.httpMethod = "POST"
-           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
            request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+           request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+          
 
            do {
                let requestBody = try JSONEncoder().encode(agent)
@@ -92,10 +94,12 @@ class AgentsViewController: UIViewController {
            }
 
            performRequest(request, action: "save") { success in
-               if success {
-                   self.showAlert(message: "Agent saved successfully!")
-               } else {
-                   self.showAlert(message: "Failed to save agent. Please try again.")
+               DispatchQueue.main.async{
+                   if success {
+                       self.showAlert(message: "Agent saved successfully!")
+                   } else {
+                       self.showAlert(message: "Failed to save agent. Please try again.")
+                   }
                }
            }
        }
@@ -105,11 +109,14 @@ class AgentsViewController: UIViewController {
 
            var request = URLRequest(url: url)
            request.httpMethod = "PUT"
+           request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
            request.httpBody = try? JSONEncoder().encode(agent)
 
            performRequest(request, action: "update") { success in
-               self.showAlert(message: success ? "Agent updated successfully!" : "Failed to update agent.")
+               DispatchQueue.main.async {
+                   self.showAlert(message: success ? "Agent updated successfully!" : "Failed to update agent.")
+               }
            }
        }
 
@@ -119,16 +126,18 @@ class AgentsViewController: UIViewController {
            let request = URLRequest(url: url)
 
            performRequestWithData(request) { data in
-               guard let data = data else {
-                   self.showAlert(message: "Failed to fetch agent")
-                   return
-               }
+               DispatchQueue.main.async {
+                   guard let data = data else {
+                       self.showAlert(message: "Failed to fetch agent")
+                       return
+                   }
 
-               do {
-                   let agent = try JSONDecoder().decode(Agent.self, from: data)
-                   self.navigateToAgentDisplay(with: agent)
-               } catch {
-                   self.showAlert(message: "Failed to parse agent data")
+                   do {
+                       let agent = try JSONDecoder().decode(Agent.self, from: data)
+                       self.navigateToAgentDisplay(with: agent)
+                   } catch {
+                       self.showAlert(message: "Failed to parse agent data")
+                   }
                }
            }
        }
@@ -138,9 +147,12 @@ class AgentsViewController: UIViewController {
 
            var request = URLRequest(url: url)
            request.httpMethod = "DELETE"
+           request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
 
            performRequest(request, action: "delete") { success in
-               self.showAlert(message: success ? "Agent deleted successfully!" : "Failed to delete agent.")
+               DispatchQueue.main.async {
+                   self.showAlert(message: success ? "Agent deleted successfully!" : "Failed to delete agent.")
+               }
            }
        }
 
@@ -148,12 +160,16 @@ class AgentsViewController: UIViewController {
            URLSession.shared.dataTask(with: request) { _, response, error in
                if let error = error {
                    print("Request Error: \(error.localizedDescription)")
-                   completion(false)
+                   DispatchQueue.main.async {
+                       completion(false)
+                   }
                    return
                }
 
                guard let httpResponse = response as? HTTPURLResponse, 200...299 ~= httpResponse.statusCode else {
-                   completion(false)
+                   DispatchQueue.main.async {
+                       completion(false)
+                   }
                    return
                }
 

@@ -43,7 +43,7 @@ class VehicleViewController: UIViewController,UIPickerViewDelegate, UIPickerView
     @IBOutlet var showButton: UIButton!
     @IBOutlet var deleteButton: UIButton!
     
-
+    let accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoibW0iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJubiIsImV4cCI6MTczNTQxNDU1NSwiaXNzIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIiwiYXVkIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIn0.V0awAs8QxFby8zAy0kd_WBFWZiP_fhHKYyx7kS-Ino8"
     private let baseURL = "https://abzvehiclewebapi-chana.azurewebsites.net/api/Vehicle"
     
     // MARK: - Drop Down Data
@@ -155,6 +155,7 @@ class VehicleViewController: UIViewController,UIPickerViewDelegate, UIPickerView
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         do {
@@ -181,6 +182,7 @@ class VehicleViewController: UIViewController,UIPickerViewDelegate, UIPickerView
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try? JSONEncoder().encode(vehicle)
         
@@ -220,6 +222,7 @@ class VehicleViewController: UIViewController,UIPickerViewDelegate, UIPickerView
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         
         performRequest(request) { success in
             self.showAlert(message: success ? "Vehicle deleted successfully" : "Failed to delete vehicle")

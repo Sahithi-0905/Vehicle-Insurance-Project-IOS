@@ -46,7 +46,7 @@ class ClaimsViewController: UIViewController {
     
        let datePicker = UIDatePicker()
     
-    let accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWJjIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiYWRtaW4iLCJleHAiOjE3MzUzMjY2MTcsImlzcyI6Imh0dHBzOi8vd3d3LnRlYW0yLmNvbSIsImF1ZCI6Imh0dHBzOi8vd3d3LnRlYW0yLmNvbSJ9.lHyNu9sEXFR5kTCDON8tQPJ5d8eI390LJE--OfOVmmI"
+    let accessToken="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoieXkiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJtbSIsImV4cCI6MTczNTQ4NjM0MSwiaXNzIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIiwiYXVkIjoiaHR0cHM6Ly93d3cudGVhbTIuY29tIn0.sqTWhGQtnvTiiGsk4zC12V_O8xkd66peYrKpvIj7-lU"
     
         let baseURL = "https://abzclaimwebapi-akshitha.azurewebsites.net/api/claim"
 
@@ -122,6 +122,7 @@ class ClaimsViewController: UIViewController {
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
         do {
@@ -148,6 +149,7 @@ class ClaimsViewController: UIViewController {
         
         var request = URLRequest(url: url)
         request.httpMethod = "PUT"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpBody = try? JSONEncoder().encode(Claim)
         
@@ -187,6 +189,7 @@ class ClaimsViewController: UIViewController {
         
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         
         performRequest(request, action: "delete") { success in
             if success {
