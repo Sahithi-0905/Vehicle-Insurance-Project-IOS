@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		652ED9582D2279E400A54123 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 652ED9572D2279E400A54123 /* FirebaseAuth */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		65E25CA52CF7974C005857D4 /* VehicalInsuranceProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VehicalInsuranceProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				652ED9582D2279E400A54123 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = VehicalInsuranceProject;
 			packageProductDependencies = (
+				652ED9572D2279E400A54123 /* FirebaseAuth */,
 			);
 			productName = VehicalInsuranceProject;
 			productReference = 65E25CA52CF7974C005857D4 /* VehicalInsuranceProject.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 65E25C9C2CF7974B005857D4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				652ED9562D2279E400A54123 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 65E25CA62CF7974C005857D4 /* Products */;
 			projectDirPath = "";
@@ -333,6 +342,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		652ED9562D2279E400A54123 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		652ED9572D2279E400A54123 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 652ED9562D2279E400A54123 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 65E25C9D2CF7974B005857D4 /* Project object */;
 }
